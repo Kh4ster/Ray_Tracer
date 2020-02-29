@@ -6,6 +6,7 @@
 #include "Vector3.hpp"
 #include "Ray.hpp"
 #include "Intersection.hpp"
+#include "math_util.hpp"
 
 using Point3 = Vector3; // Points and vectors are basically the same thing + simplifies calculation between them
 using Vector2 = Vector3; // To handle vectors on the scene
@@ -14,7 +15,7 @@ using Point2 = Vector2; // To handle points on the scene
 class Engine
 {
 public:
-	void ray_trace(Image& image, const Camera& camera, Shape& scene)
+	void ray_trace(Image& image, const Camera& camera, ShapeSet& scene)
 	{
 		for (size_t y = 0; y < image.get_height(); y++)
 		{
@@ -28,21 +29,29 @@ public:
 						(-2.0f * static_cast<float>(y) + get_random_float()) / static_cast<float>(image.get_height()) + 1.0f);
 
 					Ray ray = camera.make_ray(screen_coord);
-
-					Intersection intersection(ray);
-					if (scene.intersect(intersection))
-						c += intersection.get_color();
-					else
-						c += WHITE;
+					c += get_color(ray, scene, 0);
 				}
 				image.set(x, y, c / 100.0f);
 			}
 		}
 	}
+	
 
 private:
-	float get_random_float() const
+	Color get_color(const Ray& ray, ShapeSet& scene, int depth)
 	{
-		return static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+		Intersection intersection(ray);
+		if (scene.intersect(intersection))
+		{
+			Ray scattered;
+			Vector3 attenuation;
+			if (depth < 50 && intersection.get_shape()->get_material()->scatter(intersection, attenuation, scattered)) //TODO better design
+				return get_color(scattered, scene, depth + 1) * attenuation;
+			else
+				return BLACK;
+		}
+		else
+			return WHITE;
 	}
+
 };

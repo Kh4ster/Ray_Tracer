@@ -3,8 +3,9 @@
 #include <vector>
 
 #include "Shape.hpp"
+#include "Intersection.hpp"
 
-class ShapeSet : public Shape
+class ShapeSet
 {
 public:
 
@@ -13,7 +14,7 @@ public:
 		shapes_.push_back(shape);
 	}
 
-	virtual bool intersect(Intersection& intersection) override
+	bool intersect(Intersection& intersection)
 	{
 		bool intersected = false;
 		for (auto shape : shapes_)

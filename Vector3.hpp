@@ -3,12 +3,14 @@
 #include <iostream>
 #include <cmath>
 
+#include "math_util.hpp"
+
 class Vector3;
 
-extern float dot(const Vector3& v1, const Vector3& v2);
-extern Vector3 cross(const Vector3& v1, const Vector3& v2);
-extern float sqr(float v);
-extern std::ostream& operator<<(std::ostream& out, const Vector3& v);
+float dot(const Vector3& v1, const Vector3& v2);
+Vector3 cross(const Vector3& v1, const Vector3& v2);
+float sqr(float v);
+std::ostream& operator<<(std::ostream& out, const Vector3& v);
 
 class Vector3
 {

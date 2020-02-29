@@ -4,6 +4,8 @@
 #include "Vector3.hpp"
 #include "Intersection.hpp"
 #include "Ray.hpp"
+#include "ShapeSet.hpp"
+#include "math_util.hpp"
 
 class Plane : public Shape
 {

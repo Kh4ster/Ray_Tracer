@@ -6,63 +6,86 @@
 
 #include <cmath>
 #include <algorithm>
+#include <iostream>
+
+#include "Vector3.hpp"
 
 class Color
 {
 public:
 
-	Color() : r_(0.0f), g_(0.0f), b_(0.0f) {}
+	Color()
+	{
+		rgb[0] = 0.0f;
+		rgb[1] = 0.0f;
+		rgb[2] = 0.0f;
+	}
 
-	Color(float l) : r_(l), g_(l), b_(l) {}
+	Color(float l)
+	{
+		rgb[0] = l;
+		rgb[1] = l;
+		rgb[2] = l;
+	}
 
-	Color(float r, float g, float b) : r_(r), g_(g), b_(b) {}
+	Color(float r, float g, float b)
+	{
+		rgb[0] = r;
+		rgb[1] = g;
+		rgb[2] = b;
+	}
 
 	void clamp(float min, float max)
 	{
-		r_ = std::max(min, std::min(max, r_));
-		g_ = std::max(min, std::min(max, g_));
-		b_ = std::max(min, std::min(max, b_));
+		rgb[0] = std::max(min, std::min(max, rgb[0]));
+		rgb[1] = std::max(min, std::min(max, rgb[1]));
+		rgb[2] = std::max(min, std::min(max, rgb[2]));
 	}
 
 	void apply_gamma_correction(float exposure, float gamma)
 	{
-		r_ = std::pow(r_ * exposure, gamma);
-		g_ = std::pow(g_ * exposure, gamma);
-		b_ = std::pow(b_ * exposure, gamma);
+		rgb[0] = std::pow(rgb[0] * exposure, gamma);
+		rgb[1] = std::pow(rgb[1] * exposure, gamma);
+		rgb[2] = std::pow(rgb[2] * exposure, gamma);
 	}
 
 	Color& operator+=(const Color& c)
 	{
-		r_ += c.get_r();
-		g_ += c.get_g();
-		b_ += c.get_b();
+		rgb[0] += c.get_r();
+		rgb[1] += c.get_g();
+		rgb[2] += c.get_b();
 		return *this;
 	}
 
 	Color& operator*=(const Color& c)
 	{
-		r_ *= c.get_r();
-		g_ *= c.get_g();
-		b_ *= c.get_b();
+		rgb[0] *= c.get_r();
+		rgb[1] *= c.get_g();
+		rgb[2] *= c.get_b();
 		return *this;
 	}
 
 	Color& operator*=(float f)
 	{
-		r_ *= f;
-		g_ *= f;
-		b_ *= f;
+		rgb[0] *= f;
+		rgb[1] *= f;
+		rgb[2] *= f;
 		return *this;
 	}
     
-	float get_r() const { return r_; }
-	float get_g() const { return g_; }
-	float get_b() const { return b_; }
+	float get_r() const { return rgb[0]; }
+	float get_g() const { return rgb[1]; }
+	float get_b() const { return rgb[2]; }
 
 private:
-	float r_, g_, b_;
+	float rgb[3];
 
 };
+
+inline std::ostream& operator<<(std::ostream& out, const Color& c)
+{
+	return out << "(" << c.get_r() << "," << c.get_g() << "," << c.get_b() << ")" << std::endl;
+}
 
 inline Color operator+(const Color& c1, const Color& c2)
 {
@@ -83,6 +106,13 @@ inline Color operator*(const Color& c, float f)
 	return Color(c.get_r() * f,
 		c.get_g() * f,
 		c.get_b() * f);
+}
+
+inline Color operator*(const Color& c, const Vector3& v)
+{
+	return Color(c.get_r() * v.get_x(),
+		c.get_g() * v.get_y(),
+		c.get_b() * v.get_z());
 }
 
 inline Color operator/(const Color& c, float f)

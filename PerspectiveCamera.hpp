@@ -4,6 +4,7 @@
 
 #include "Camera.hpp"
 #include "Vector3.hpp"
+#include "math_util.hpp"
 
 class PerspectiveCamera : public Camera
 {

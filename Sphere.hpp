@@ -5,17 +5,20 @@
 #include "Color.hpp"
 #include "Ray.hpp"
 #include "Intersection.hpp"
+#include "math_util.hpp"
 
 #include <cmath>
+#include <iostream>
 
 class Sphere : public Shape
 {
 public:
-	Sphere(const Point3& center, float radius, const Color& color)
+	Sphere(const Point3& center, float radius, Material* material)
 													: center_(center),
-													radius_(radius),
-													color_(color)
-													{}
+													radius_(radius)
+	{
+		material_ = material;
+	}
 
 	virtual bool intersect(Intersection& intersection) override
 	{
@@ -39,22 +42,22 @@ public:
 		float t2 = (-b + std::sqrt(discriminant)) / (2.0f * a);
 
 		// First check if close intersection is valid
-		if (t1 > RAY_T_MIN && t1 < intersection.get_coeff())
+		if (t1 > RAY_T_MIN && t1 < intersection.get_coeff() && t1 < RAY_T_MAX)
 			intersection.set_coeff(t1);
-		else if (t2 > RAY_T_MIN && t2 < intersection.get_coeff())
+		else if (t2 > RAY_T_MIN && t2 < intersection.get_coeff() && t2 < RAY_T_MAX)
 			intersection.set_coeff(t2);
 		else
 			return false;
 
 		// Finish populating intersection
 		intersection.set_shape(this);
-		intersection.set_color(color_);
+		intersection.set_normal((intersection.get_hit_location() - center_) / radius_);
 
 		return true;
 	}
 
 private:
+
 	Point3 center_;
 	float radius_;
-	Color color_;
 };

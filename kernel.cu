@@ -122,7 +122,7 @@ void device_set_color(unsigned x, unsigned y, unsigned width, Device_color *colo
 	{
 		if (spheres[i].intersect(intersection))
 		{
-			if (spheres[i].material_ == Device_Material::DEVICE_LAMB)
+			if (spheres[i].get_material() == Device_Material::DEVICE_LAMB)
 			{
 				Ray scattered;
 				Device_Lambertian::scatter(intersection, scattered);

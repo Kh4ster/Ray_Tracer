@@ -15,8 +15,9 @@
 #include <cmath>
 #include <iostream>
 
-struct Device_Sphere
+class Device_Sphere
 {
+public:
 	__device__ __host__
 	Device_Sphere(const Point3& center, float radius, Device_Material material)
 		: center_(center),
@@ -66,7 +67,11 @@ struct Device_Sphere
 
 		return true;
 	}
+	
+	__device__
+	Device_Material get_material() const { return material_; }
 
+private:
 	Device_Material material_;
 	Point3 center_;
 	float radius_;

@@ -11,8 +11,10 @@
 
 #include "Vector3.hpp"
 
+// Full public needed for cuda malloc/memcpy
 struct Device_color
 {
+
 	__device__
 	void set(unsigned x, unsigned y, float rval, float gval, float bval)
 	{
@@ -49,5 +51,4 @@ struct Device_color
 	float *g;
 	float *b;
 	unsigned width;
-
 };

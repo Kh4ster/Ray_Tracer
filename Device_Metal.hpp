@@ -7,11 +7,11 @@
 #include "Vector3.hpp"
 #include "Device_Intersection.hpp"
 
-struct Device_Metal
+class Device_Metal
 {
-
+public:
     __device__
-    inline static bool scatter(Device_Intersection& intersection, Ray& scattered)
+    static bool scatter(Device_Intersection& intersection, Ray& scattered)
     {
         Vector3 reflected = reflect(intersection.get_ray()->get_direction(), intersection.get_normal());
         scattered = Ray(intersection.get_hit_location(), reflected);
@@ -19,7 +19,7 @@ struct Device_Metal
     }
 
     __device__
-    inline static Vector3 reflect(const Vector3& v, const Vector3& n)
+    static Vector3 reflect(const Vector3& v, const Vector3& n)
     {
         return v - n * 2 * dot(v, n);
     }

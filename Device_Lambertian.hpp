@@ -12,8 +12,9 @@
 #include "Device_Intersection.hpp"
 #include <ctime>
 
-struct Device_Lambertian
+class Device_Lambertian
 {
+public:
     __device__
     static void scatter(const Device_Intersection& intersection, Ray& scattered)
     {

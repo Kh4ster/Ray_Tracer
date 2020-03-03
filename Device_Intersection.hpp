@@ -13,10 +13,11 @@
 
 struct Device_Sphere;
 
-struct Device_Intersection
+class Device_Intersection
 {
+public:
 	__device__ __host__
-	Device_Intersection(Ray* ray) : coeff_ray_collision_(FLT_MAX), ray_(ray), shape_(nullptr) {}
+	Device_Intersection(Ray* ray) : coeff_ray_collision_(FLT_MAX), ray_(ray), shape_(nullptr), color_(Device_color()) {}
 
 	__device__ __host__
 	void set_ray(Ray* r) { ray_ = r; }
@@ -42,6 +43,7 @@ struct Device_Intersection
 	__device__ __host__
 	Device_Sphere* get_shape() { return shape_; }
 
+private:
 	float coeff_ray_collision_;
 	Ray* ray_;
 	Point3 hit_location_;

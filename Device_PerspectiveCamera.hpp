@@ -10,8 +10,9 @@
 #include "Vector3.hpp"
 #include "math_util.hpp"
 
-struct Device_PerspectiveCamera
+class Device_PerspectiveCamera
 {
+public:
 	__device__  __host__
 	Device_PerspectiveCamera(const Point3& origin, const Vector3& target, float fov, float aspectRatio)
 	{
@@ -32,6 +33,7 @@ struct Device_PerspectiveCamera
 		return Ray(origin_, direction.normalize());
 	}
 
+private:
 	Point3 origin_;
 	Vector3 forward_;
 	Vector3 up_;

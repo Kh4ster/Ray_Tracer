@@ -31,6 +31,21 @@ public:
 		}
 	}
 
+	void device_create_image(std::string name, float* r, float* g, float* b, float exposure, float gamma) const
+	{
+		std::ofstream file(name);
+		file << "P3\n" << width_ << " " << height_ << "\n255\n";
+		for (size_t y = 0; y < height_; ++y)
+		{
+			for (size_t x = 0; x < width_; ++x)
+			{
+				Color curr = Color(r[x + y * width_], g[x + y * width_], b[x + y * width_]);
+				curr.apply_gamma_correction(exposure, gamma);
+				file << (unsigned)(curr.get_r() * 255.0f) << " " << (unsigned)(curr.get_g() * 255.0f) << " " << (unsigned)(curr.get_b() * 255.0f) << "\n";
+			}
+		}
+	}
+
 	size_t get_width() const { return width_; }
 	size_t get_height() const { return height_;  }
 
